@@ -33,7 +33,12 @@ async function run() {
       res.send('Hello World!')
     })
     
-    
+    app.get('/alltoys', async(req, res)=>{
+      const projection = { _id: 1, name: 1, url: 1, sellerName: 1, category:1, price: 1, quantity:1  };
+      const cursor = toyCollection.find().project(projection);
+      const result = await cursor.toArray()
+      res.send(result)
+    })
     
     app.post('/addatoy', async(req, res)=>{
       const data = req.body;
