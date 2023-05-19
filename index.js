@@ -26,16 +26,20 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    const toyCollection = client.db('toyBD').collection('toyCollectioin')
+
+    //service route
     app.get('/', (req, res) => {
       res.send('Hello World!')
     })
     
     
     
-    app.post('/addatoy', (req, res)=>{
+    app.post('/addatoy', async(req, res)=>{
       const data = req.body;
-      res.send(data)
-      console.log(data);
+      const result = await toyCollection.insertOne(data)
+   
+      res.send(result)
     })
     
 
