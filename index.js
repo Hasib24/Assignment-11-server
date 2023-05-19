@@ -12,6 +12,14 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+
+
+app.post('/addatoy', (req, res)=>{
+  const data = req.body;
+  res.send(data)
+  console.log(data);
+})
+
 app.listen(port, () => {
   console.log(`Server is running at port:  ${port}`)
 })
