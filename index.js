@@ -33,23 +33,38 @@ async function run() {
       res.send('Hello World!')
     })
     
+    //all data
     app.get('/alltoys', async(req, res)=>{
       const projection = { _id: 1, name: 1, url: 1, sellerName: 1, category:1, price: 1, quantity:1  };
       const cursor = toyCollection.find().project(projection);
       const result = await cursor.toArray()
       res.send(result)
     })
+
+
     
+    // add data
     app.post('/addatoy', async(req, res)=>{
       const data = req.body;
       const result = await toyCollection.insertOne(data)
       res.send(result)
     })
 
+    //conditional data
     app.get('/mytoys/:mail', async(req, res)=>{
       const mail= req.params.mail
       const query = {email: mail}
       const result = await toyCollection.find(query).toArray()
+      res.send(result)
+    })
+
+    //categoriacal data
+    app.get('/alltoys/:category', async(req, res)=>{
+      const category= req.params.category
+      const query = {category: category}
+      const projection = { _id: 1, name: 1, url: 1, sellerName: 1, category:1, price: 1, rating:1  };
+      const cursor = toyCollection.find(query).project(projection);
+      const result = await cursor.toArray()
       res.send(result)
     })
 
