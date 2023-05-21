@@ -100,6 +100,14 @@ async function run() {
       const result = await toyCollection.updateOne(query, updateDoc, options)
       res.send(result);
     })
+
+    
+    app.get('/viewdetails/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id)};
+      const result = await toyCollection.find(query).toArray()
+      res.send(result);
+    })
     
 
     // Send a ping to confirm a successful connection
