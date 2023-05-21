@@ -43,7 +43,6 @@ async function run() {
     app.post('/addatoy', async(req, res)=>{
       const data = req.body;
       const result = await toyCollection.insertOne(data)
-   
       res.send(result)
     })
 
@@ -65,6 +64,16 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id)};
       const result = await toyCollection.find(query).toArray()
+      res.send(result);
+    })
+    
+    app.patch('/update/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id)};
+      const options = { upsert: true };
+      const toy = req.body;
+      const updateDoc = { $set: toy }
+      const result = await toyCollection.updateOne(query, updateDoc, options)
       res.send(result);
     })
     
