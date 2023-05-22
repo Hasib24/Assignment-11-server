@@ -19,33 +19,27 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  maxPoolSize: 10
 });
 
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    client.connect((error)=>{
-      if(error){
-        console.log(error);
-        return
-      }
-    })
+    // client.connect((error)=>{
+    //   if(error){
+    //     console.log(error);
+    //     return
+    //   }
+    // })
 
     const toyCollection = client.db('toyBD').collection('toyCollectioin')
 
     //service route
-    app.get('/', (req, res) => {
-      res.send('Hello World!')
-    })
+  
     
     //all data
     app.get('/alltoys', async(req, res)=>{
       const projection = { _id: 1, name: 1, url: 1, sellerName: 1, category:1, price: 1, quantity:1  };
-      const cursor = toyCollection.find().project(projection);
+      const cursor = toyCollection.find({}).project(projection);
       const result = await cursor.toArray()
       res.send(result)
     })
@@ -120,7 +114,9 @@ async function run() {
 }
 run().catch(console.dir);
 
-
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
 app.listen(port, () => {
   console.log(`Server is running at port:  ${port}`)
